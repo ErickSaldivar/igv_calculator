@@ -3,7 +3,7 @@ description: "Calculadora de Impuestos IGV y Renta de cuanta y quinta categoria"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
   
-version: 2.0.1+8
+version: 2.0.3+10
 
 environment:
   sdk: ^3.8.1

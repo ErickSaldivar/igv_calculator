@@ -26,7 +26,7 @@ Valores actualizados al 2026.''';
                   child: Text(infoText, textAlign: TextAlign.justify),
                 ),
                 Divider(),
-                Text("Calculador IGV - Renta ver. 2.0"),
+                Text("Calculadora IGV - Renta ver. 2.0.3"),
                 Text(
                   "Gracias por usar nuestra app, invítanos un café para seguir desarrollando más aplicaciones.",
                 ),

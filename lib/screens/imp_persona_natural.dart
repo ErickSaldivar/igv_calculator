@@ -12,23 +12,31 @@ class ImpPersonaNatural extends StatefulWidget {
 }
 
 class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
-  TextEditingController ingresosCuarta = TextEditingController();
-  TextEditingController ingresosQuinta = TextEditingController();
+  final TextEditingController ingresosCuarta = TextEditingController();
+  final TextEditingController ingresosQuinta = TextEditingController();
+  final TextEditingController deducciones = TextEditingController();
+  final TextEditingController retenciones = TextEditingController();
 
-  TextEditingController deducciones = TextEditingController();
-  TextEditingController retenciones = TextEditingController();
+  @override
+  void dispose() {
+    ingresosCuarta.dispose();
+    ingresosQuinta.dispose();
+    deducciones.dispose();
+    retenciones.dispose();
+    super.dispose();
+  }
 
   void _showInfoDialog(String title, String content) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+          title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
           content: Text(content),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text("Cerrar"),
+              child: const Text("Cerrar"),
             ),
           ],
         );
@@ -61,9 +69,9 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
           isEnabled: true,
           onChanged: onChanged,
         ),
-        SizedBox(width: 5),
+        const SizedBox(width: 5),
         IconButton(
-          icon: Icon(Icons.info_outline, color: Colors.blueGrey),
+          icon: const Icon(Icons.info_outline, color: Colors.blueGrey),
           onPressed: () => _showInfoDialog(label, infoText),
           tooltip: "Más información",
         ),
@@ -74,7 +82,7 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
-    final provider = Provider.of<PerNaturalProvider>(context);
+    final provider = context.watch<PerNaturalProvider>();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -82,17 +90,16 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 "Renta Cuarta y Quinta Categoría",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              Text(
+              const Text(
                 "Ingresos año actual",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
-              //!!INGRESOS DE 4TA Y 5TA CATEGORIA + RETENCIONES
+              const SizedBox(height: 20),
               _buildInputWithInfo(
                 w,
                 "Ingreso anual 4ta categoría",
@@ -100,7 +107,7 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
                 (value) => provider.setIngresosCuarta(value),
                 "Suma de todos tus recibos por honorarios emitidos en el año.",
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildInputWithInfo(
                 w,
                 "Ingreso anual 5ta categoría",
@@ -108,7 +115,7 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
                 (value) => provider.setIngresosQuinta(value),
                 "Suma de todos tus ingresos por planilla (sueldos, gratificaciones, etc.) en el año.",
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildInputWithInfo(
                 w,
                 "Deducciones sobre 5ta categoría",
@@ -116,7 +123,7 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
                 (value) => provider.setDeducciones(value),
                 "Monto de deducciones adicionales (hasta 3 UIT) más ITF que reducen tu base imponible.",
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildInputWithInfo(
                 w,
                 "Retenciones sobre 5ta categoría",
@@ -124,7 +131,7 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
                 (value) => provider.setRetenciones(value),
                 "Impuestos que ya te han sido retenidos por tu empleador o pagos a cuenta realizados.",
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -141,28 +148,26 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 width: w * 0.9,
                 height: 100,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
                   border: Border.all(
-                    color: Color.fromRGBO(124, 141, 159, 1),
+                    color: const Color.fromRGBO(124, 141, 159, 1),
                     width: 2,
                   ),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                //!!RENTA A PAGAR
-                //*PARA QUE EXISTA UN IMPUESTO A PAGAR DEBE SER MAYOR A 7 UIT
                 child: Stack(
                   children: [
                     Positioned.fill(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
+                          const Text(
                             "RENTA A PAGAR",
                             style: TextStyle(
                               fontSize: 15,
@@ -171,7 +176,7 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
                           ),
                           Text(
                             "S/. ${provider.rentaPagar >= 0 ? provider.rentaPagar.toStringAsFixed(2) : "0"}",
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 23,
                               fontWeight: FontWeight.bold,
                             ),
@@ -184,8 +189,8 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
                       top: -14,
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
-                        icon: Icon(Icons.info_outline, color: Colors.blueGrey),
+                        constraints: const BoxConstraints(),
+                        icon: const Icon(Icons.info_outline, color: Colors.blueGrey),
                         onPressed: () => _showInfoDialog(
                           "Renta a Pagar",
                           "Este es el monto estimado de impuesto a pagar después de considerar tus ingresos, deducciones y retenciones.",
@@ -198,8 +203,8 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
                       bottom: -10,
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
-                        icon: Icon(
+                        constraints: const BoxConstraints(),
+                        icon: const Icon(
                           Icons.refresh,
                           color: Colors.blueGrey,
                           size: 40,
@@ -214,6 +219,7 @@ class _ImpPersonaNaturalState extends State<ImpPersonaNatural> {
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

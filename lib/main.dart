@@ -9,11 +9,41 @@ import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'dart:async';
+import 'package:flutter/foundation.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
-  final prefs = await SharedPreferences.getInstance();
-  final bool hasSeenWelcome = prefs.getBool('hasSeenWelcome') ?? false;
+
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.presentError(details);
+    debugPrint('FlutterError caught: ${details.exceptionAsString()}');
+  };
+
+  PlatformDispatcher.instance.onError = (error, stack) {
+    debugPrint('PlatformDispatcher error caught: $error');
+    return true;
+  };
+
+  try {
+    unawaited(
+      MobileAds.instance.initialize().catchError((error) {
+        debugPrint('Error initializing MobileAds: $error');
+        return InitializationStatus({});
+      }),
+    );
+  } catch (e) {
+    debugPrint('Exception initializing MobileAds: $e');
+  }
+
+  bool hasSeenWelcome = false;
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    hasSeenWelcome = prefs.getBool('hasSeenWelcome') ?? false;
+  } catch (e) {
+    debugPrint('Error reading SharedPreferences: $e');
+  }
+
   runApp(
     MultiProvider(
       providers: [

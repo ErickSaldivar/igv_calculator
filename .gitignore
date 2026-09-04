@@ -3,7 +3,10 @@
 *.log
 *.pyc
 *.swp
+*.swo
+*~
 .DS_Store
+Thumbs.db
 .atom/
 .build/
 .buildlog/
@@ -12,16 +15,25 @@
 .swiftpm/
 migrate_working_dir/
 
+# Environment and Secrets
+.env
+.env.*
+*.env
+*.private
+secrets.json
+
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# Visual Studio Code related
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -32,22 +44,33 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+build/
 
-# Symbolication related
-app.*.symbols
-
-# Obfuscation related
-app.*.map.json
-
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
-
-# Android signing keys
+# Android signing keys & credentials (CRITICAL SECURITY)
 key.properties
+signing.properties
 **/*.jks
 **/*.keystore
+**/*.p12
+**/*.pfx
+**/*.pem
+**/*.key
+**/*.cer
+**/*.crt
+**/*.der
+
+# App Binaries & Bundles
+*.apk
+*.aab
+*.ipa
+*.app
+*.xarchive
+
+# Symbolication & Obfuscation related
+app.*.symbols
+app.*.map.json
+**/mapping/
+mapping.txt
 
 # Android Gradle generated files
 /android/.gradle/
@@ -58,3 +81,20 @@ key.properties
 /android/kotlin-profile/
 /android/native/
 /android/wrapper/
+.cxx/
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# iOS related
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Runner/GeneratedPluginRegistrant.h
+**/ios/Runner/GeneratedPluginRegistrant.m
+*.mobileprovision

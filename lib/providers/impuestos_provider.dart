@@ -14,7 +14,7 @@ class ImpuestosProvider extends ChangeNotifier {
   final double _limite1 = 5000.0;
   final double _limite2 = 8000.0;
 
-  //Getters
+  // Getters
   double get ventas => _ventas;
   double get compras => _compras;
   double get igvPagar => _igvPagar;
@@ -29,7 +29,6 @@ class ImpuestosProvider extends ChangeNotifier {
     _ventas = double.tryParse(ventas) ?? 0.0;
     _compras = double.tryParse(compras) ?? 0.0;
 
-    //bool out = _ventas < 8000 && _compras < 8000;
     bool etapa1 =
         (_ventas <= 8000 && _compras <= 8000) &&
         (_ventas >= 0 && _compras >= 0);
@@ -38,36 +37,37 @@ class ImpuestosProvider extends ChangeNotifier {
     if (etapa1) {
       if (etapa2) {
         _impPagar = 20.0;
-        return;
+      } else {
+        _impPagar = 50.0;
       }
-      _impPagar = 50.0;
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: AwesomeSnackbarContent(
-            title: "Error",
-            message:
-                "Los valores estan fuera de Rango. \nNo corresponde este régimen.",
-            contentType: ContentType.failure,
+      _impPagar = 0.0;
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: AwesomeSnackbarContent(
+              title: "Error",
+              message:
+                  "Los valores estan fuera de Rango. \nNo corresponde este régimen.",
+              contentType: ContentType.failure,
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            behavior: SnackBarBehavior.floating,
           ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+        );
+      }
     }
     notifyListeners();
   }
 
   // Set desde Impuesto Especial
   void impuestoEspecial(String ventas, String compras) {
-    double diferencia = 0;
-    _ventas = double.tryParse(ventas) ?? 0;
-    _compras = double.tryParse(compras) ?? 0;
-    diferencia = (_ventas - _compras);
-    _igvPagar = (diferencia) * _tasaIGV;
+    _ventas = double.tryParse(ventas) ?? 0.0;
+    _compras = double.tryParse(compras) ?? 0.0;
+    double diferencia = _ventas - _compras;
+    _igvPagar = diferencia > 0 ? diferencia * _tasaIGV : 0.0;
     _rentaPagar = _ventas * _tasaRenta;
-    debugPrint("$_rentaPagar");
     notifyListeners();
   }
 

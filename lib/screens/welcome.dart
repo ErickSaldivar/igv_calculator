@@ -19,12 +19,12 @@ class WelcomePage extends StatelessWidget {
             ),
           ),
           child: AppBar(
-            title: Text(
+            title: const Text(
               "Calculadora de IGV - Renta Perú",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 24,
+                fontSize: 22,
               ),
             ),
             centerTitle: true,
@@ -34,48 +34,63 @@ class WelcomePage extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(height: 10),
-            Image.asset("assets/welcome.png"),
-            SizedBox(height: 20),
-            Text(
-              "Calcula impuestos de forma sencilla",
-              style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Nuestra aplicación está diseñada para contadores, facilitando el cálculo de impuestos con herramientas intuitivas y precisas.",
-              style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 30),
-            SizedBox(
-              width: 300,
-              child: ElevatedButton(
-                onPressed: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setBool('hasSeenWelcome', true);
-                  if (!context.mounted) return;
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Pagenav()),
-                  );
-                },
-                child: Text(
-                  'Comenzar',
-                  style: TextStyle(
-                    fontSize: 20,
-                    //color: Colors.white,
-                    fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 10),
+                Image.asset(
+                  "assets/welcome.png",
+                  height: 220,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Calcula impuestos de forma sencilla",
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  "Nuestra aplicación está diseñada para contadores, facilitando el cálculo de impuestos con herramientas intuitivas y precisas.",
+                  style: TextStyle(fontSize: 16, color: Colors.black87),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      try {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool('hasSeenWelcome', true);
+                      } catch (e) {
+                        debugPrint('Error saving welcome pref: $e');
+                      }
+                      if (!context.mounted) return;
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Pagenav()),
+                      );
+                    },
+                    child: const Text(
+                      'Comenzar',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 20),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
